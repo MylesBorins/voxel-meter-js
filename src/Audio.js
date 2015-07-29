@@ -9,7 +9,7 @@ function wireMic(audioContext, analyzer) {
     mediaStreamSource.connect(analyzer);
   }
 
-  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
   navigator.getUserMedia({audio: true}, gotStream, function (err) {
     console.log(err);
   });
