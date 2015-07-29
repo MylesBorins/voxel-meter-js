@@ -1,6 +1,7 @@
 'use strict';
 
 var Grid = require('./Grid');
+var Aud = require('./Audio');
 
 function VUSpec(scene, options) {
   if (!options) {
@@ -10,8 +11,22 @@ function VUSpec(scene, options) {
   var i;
   var j;
 
-  this.width = options.width || 8;
-  this.height = options.height || 8;
+  this.node = scene.addChild()
+    .setOrigin(0.5, 0.5, 0.5)
+    .setAlign(0.5, 0.5, 0.5)
+    .setMountPoint(0.5, 0.5, 0.5)
+    .setSizeMode(1, 1, 1);
+    
+  this.id = this.node.addComponent(this);
+  this.width = options.width || 32;
+  this.height = options.height || 16;
+  
+  this.grid = new Grid(this.node, {
+    height: this.height,
+    width: this.width
+  });
+
+  this.audio = new Aud();
 
   this.alphas = [];
   this.prevAlphas = [];
@@ -25,14 +40,6 @@ function VUSpec(scene, options) {
     }
   }
 
-  this.node = scene.addChild()
-    .setOrigin(0.5, 0.5, 0.5)
-    .setAlign(0.5, 0.5, 0.5)
-    .setMountPoint(0.5, 0.5, 0.5)
-    .setSizeMode(1, 1, 1);
-
-  this.grid = new Grid(this.node);
-
   var colors = [];
 
   for (i = 0; i < this.width; i ++) {
@@ -44,8 +51,66 @@ function VUSpec(scene, options) {
   for (i = 0; i < this.width; i ++) {
     this.grid.setColumnColor(i, colors);
   }
+  
+  for (i = 0; i < this.width; i ++) {
+    this.grid.setColumnAlpha(i, this.alphas[i]);
+  }
+  
+  this.node.requestUpdate(this.id);
 
   return this;
 }
+
+VUSpec.prototype.setColumnAlpha = function (fftVal, ceil, bin, decay) {
+  var segment = ceil / this.height;
+  
+  for (var i = 0; i < this.height; i++) {
+    fftVal -= segment;
+    if (fftVal >= segment) {
+      this.alphas[bin][i] = 1;
+    }
+    else if (fftVal >= 0) {
+      this.alphas[bin][i] = fftVal / segment;
+    }
+    else {
+      this.alphas[bin][i] = 0;
+    }
+    this.alphas[bin][i] = this.alphas[bin][i] + this.prevAlphas[bin][i];
+    this.prevAlphas[bin][i] = this.alphas[bin][i] * decay;
+  }
+  this.alphas[bin].reverse();
+};
+
+VUSpec.prototype.onUpdate = function (time) {
+  var i, j;
+  var fft = this.audio.getFFT();
+  var freqs = []
+  var value;
+  for (i = 0; i < fft.length; i++) {
+    value = fft[i];
+    freqs.push(value / 256);
+  }
+  
+  var blockSize = freqs.length / this.width;
+  var blocks = [];
+  
+  for (i = 0; i < this.width; i++) {
+    blocks.push([]);
+    blocks[i] = 0;
+    for (j = 0; j < blockSize; j++) {
+      blocks[i] += freqs[j + i * blockSize];
+    }
+    blocks[i] /= blockSize;
+  }
+
+  blocks.reverse();
+
+  for (i = 0; i < this.width; i++) {
+    this.setColumnAlpha(blocks[i], 0.55, i, 0.85);
+    this.grid.setColumnAlpha(i, this.alphas[i]);
+  }
+
+  this.node.requestUpdateOnNextTick(this.id);
+};
 
 module.exports = VUSpec;
