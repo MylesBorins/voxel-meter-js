@@ -36,10 +36,11 @@ function VUSpec(scene, options) {
   this.grid.rotation = new Rotation(this.node)
   
   this.el = scene.addChild()
-  new DOMElement(this.el)
+  //this.el.setPosition(0,0,-1000)
+  new DOMElement(this.el).setCutoutState(false)
 
   this.gestures = new GestureHandler(this.el).on('tap', function(e,v){
-    this.grid.rotation.set(0,0,2*Math.PI,{duration:1000, curve:'easeOut'}, function(){
+    this.grid.rotation.set(0,2*Math.PI,0,{duration:3000, curve:'easeOut'}, function(){
        this.grid.rotation.set(0,0,0)
     }.bind(this))
   }.bind(this)) 
