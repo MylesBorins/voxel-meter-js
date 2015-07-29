@@ -114,6 +114,12 @@ VUSpec.prototype.onUpdate = function (time) {
     this.grid.setColumnAlpha(i, this.alphas[i]);
   }
 
+  this.node.setRotation(
+    Math.sin(time / 1500) * 0.2,
+    Math.sin(time / 750) * 0.2,
+    Math.sin(time / 3000) * 0.2
+  );
+
   this.node.requestUpdateOnNextTick(this.id);
 };
 
