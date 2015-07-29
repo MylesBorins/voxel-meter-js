@@ -3,13 +3,20 @@
 var Mesh = require('famous/webgl-renderables/Mesh');
 var Color = require('famous/utilities/Color');
 
-function Box(scene) {
+function Box(scene, options) {
+  
+  if (!options) {
+    options = {};
+  }
+  
+  this.width = options.width || 25;
+  
   this.node = scene.addChild()
     .setOrigin(0.5, 0.5, 0.5)
     .setAlign(0.5, 0.5, 0.5)
     .setMountPoint(0.5, 0.5, 0.5)
     .setSizeMode(1, 1, 1)
-    .setAbsoluteSize(50, 50, 50);
+    .setAbsoluteSize(this.width, this.width, this.width);
 
   this.mesh = new Mesh(this.node).setGeometry('Box');
   this.color = new Color('grey');

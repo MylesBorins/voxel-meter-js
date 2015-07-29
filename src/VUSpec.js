@@ -18,12 +18,16 @@ function VUSpec(scene, options) {
     .setSizeMode(1, 1, 1);
     
   this.id = this.node.addComponent(this);
-  this.width = options.width || 32;
-  this.height = options.height || 16;
+  this.width = options.width || 8;
+  this.height = options.height || 8;
+  this.boxSize = options.boxSize || 25;
+  this.ceil = options.ceil || 0.6;
+  this.decay = options.decay || 0.8;
   
   this.grid = new Grid(this.node, {
     height: this.height,
-    width: this.width
+    width: this.width,
+    boxSize: this.boxSize
   });
 
   this.audio = new Aud();
@@ -61,8 +65,8 @@ function VUSpec(scene, options) {
   return this;
 }
 
-VUSpec.prototype.setColumnAlpha = function (fftVal, ceil, bin, decay) {
-  var segment = ceil / this.height;
+VUSpec.prototype.setColumnAlpha = function (fftVal, bin) {
+  var segment = this.ceil / this.height;
   
   for (var i = 0; i < this.height; i++) {
     fftVal -= segment;
@@ -76,7 +80,7 @@ VUSpec.prototype.setColumnAlpha = function (fftVal, ceil, bin, decay) {
       this.alphas[bin][i] = 0;
     }
     this.alphas[bin][i] = this.alphas[bin][i] + this.prevAlphas[bin][i];
-    this.prevAlphas[bin][i] = this.alphas[bin][i] * decay;
+    this.prevAlphas[bin][i] = this.alphas[bin][i] * this.decay;
   }
   this.alphas[bin].reverse();
 };
@@ -84,7 +88,7 @@ VUSpec.prototype.setColumnAlpha = function (fftVal, ceil, bin, decay) {
 VUSpec.prototype.onUpdate = function (time) {
   var i, j;
   var fft = this.audio.getFFT();
-  var freqs = []
+  var freqs = [];
   var value;
   for (i = 0; i < fft.length; i++) {
     value = fft[i];
@@ -106,7 +110,7 @@ VUSpec.prototype.onUpdate = function (time) {
   blocks.reverse();
 
   for (i = 0; i < this.width; i++) {
-    this.setColumnAlpha(blocks[i], 0.55, i, 0.85);
+    this.setColumnAlpha(blocks[i], i);
     this.grid.setColumnAlpha(i, this.alphas[i]);
   }
 

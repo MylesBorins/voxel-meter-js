@@ -2,8 +2,8 @@
 
 var Box = require('./Box');
 
-function calcPos(dimension, count) {
-  return dimension * 50 / 2 - 50 * count;
+function calcPos(dimension, boxSize, count) {
+  return dimension * boxSize / 2 - boxSize * count;
 }
 
 function Grid(scene, options) {
@@ -13,6 +13,7 @@ function Grid(scene, options) {
 
   this.width = options.width || 8;
   this.height = options.height || 8;
+  this.boxSize = options.boxSize || 25;
 
   this.node = scene.addChild()
     .setOrigin(0.5, 0.5, 0.5)
@@ -27,9 +28,11 @@ function Grid(scene, options) {
   for (i = 0; i < this.width; i++) {
     this.children.push([]);
     for (j = 0; j < this.height; j++) {
-      posX = calcPos(this.width, i);
-      posY = calcPos(this.height, j);
-      this.children[i].push(new Box(this.node));
+      posX = calcPos(this.width, this.boxSize, i);
+      posY = calcPos(this.height, this.boxSize, j);
+      this.children[i].push(new Box(this.node, {
+        width: this.boxSize
+      }));
       this.children[i][j].setPosition(posX, posY, 0);
     }
     this.children[i].reverse();
