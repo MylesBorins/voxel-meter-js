@@ -18,7 +18,7 @@ function Box(scene) {
 }
 
 Box.prototype.setColor = function (rgb) {
-  this.color.setRGB(rgb);
+  this.color.setRGB(rgb[0], rgb[1], rgb[2]);
   this.mesh.setBaseColor(this.color);
 };
 

@@ -17,3 +17,4 @@ var scene = FamousEngine.createScene();
 var camera = new Camera(scene).setDepth(1000);
   
 var vu = new VUSpec(scene);
+window.vu = vu;

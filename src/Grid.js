@@ -22,16 +22,17 @@ function Grid(scene, options) {
   
   var i, j, posX, posY;
 
-  for (i = 0; i <= this.width; i++) {
+  for (i = 0; i < this.width; i++) {
     this.children.push([]);
-    for (j = 0; j <= this.height; j++) {
+    for (j = 0; j < this.height; j++) {
       posX = calcPos(this.width, i);
       posY = calcPos(this.height, j);
       this.children[i].push(new Box(this.node));
       this.children[i][j].setPosition(posX, posY, 0);
     }
+    this.children[i].reverse();
   }
-  
+  this.children.reverse();
   return this;
 }
 
@@ -44,13 +45,13 @@ Grid.prototype.setBlockAlpha = function (x, y, alpha) {
 };
 
 Grid.prototype.setColumnColor = function (column, colors) {
-  for (var i = 0; i <= this.height; i++) {
+  for (var i = 0; i < this.height; i++) {
     this.children[column][i].setColor(colors[i]);
   }
 };
 
 Grid.prototype.setColumnAlpha = function (column, alphas) {
-  for (var i = 0; i <= this.height; i++) {
+  for (var i = 0; i < this.height; i++) {
     this.children[column][i].setAlpha(alphas[i]);
   }
 };
