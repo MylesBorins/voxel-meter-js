@@ -15,11 +15,11 @@ function VUSpec(scene, options) {
 
   this.alphas = [];
   this.prevAlphas = [];
-
+ 
   for (i = 0; i < this.width; i ++) {
     this.alphas.push([]);
     this.prevAlphas.push([]);
-    for (j = 0; i < this.height; j++) {
+    for (j = 0; j < this.height; j++) {
       this.alphas[i].push(0);
       this.prevAlphas[i].push(0);
     }
