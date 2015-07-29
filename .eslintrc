@@ -20,7 +20,7 @@
     // Variables
     "no-shadow": 0, //Too much noise from tests, might consider to enable it as a warning later
     "no-undefined": 0,
-    "no-unused-vars": [2, {"vars": "all", "args": "none"}],
+    "no-unused-vars": [1, {"vars": "all", "args": "none"}],
     "no-use-before-define": [0, "nofunc"],
     "no-new": 0,
     // Stylistic Issues

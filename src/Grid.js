@@ -7,7 +7,9 @@ function calcPos(dimension, count) {
 }
 
 function Grid(scene, options) {
-  if (!options) { options = {}; }
+  if (!options) {
+    options = {};
+  }
 
   this.width = options.width || 8;
   this.height = options.height || 8;
@@ -19,7 +21,7 @@ function Grid(scene, options) {
     .setSizeMode(1, 1, 1);
 
   this.children = [];
-  
+
   var i, j, posX, posY;
 
   for (i = 0; i < this.width; i++) {

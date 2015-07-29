@@ -26,8 +26,8 @@ Box.prototype.setAlpha = function (alpha) {
   this.node.setOpacity(alpha);
 };
 
-Box.prototype.setPosition = function(x, y, z) {
+Box.prototype.setPosition = function (x, y, z) {
   this.node.setPosition(x, y, z);
-}
+};
 
 module.exports = Box;

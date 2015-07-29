@@ -12,14 +12,6 @@
   "requireSpacesInFunctionExpression": {
     "beforeOpeningCurlyBrace": true
   },
-  "disallowSpacesInFunctionExpression": {
-    "beforeOpeningRoundBrace": true
-  },
-  "validateJSDoc": {
-    "checkParamNames": true,
-    "requireParamTypes": false
-  },
   "validateQuoteMarks": "'",
-  "disallowMultipleVarDecl": true,
   "disallowSpacesInsideParentheses": true
 }
