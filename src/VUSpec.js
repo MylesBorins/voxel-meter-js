@@ -33,17 +33,17 @@ function VUSpec(scene, options) {
     boxSize: this.boxSize
   });
 
-  this.grid.rotation = new Rotation(this.node)
+  this.grid.rotation = new Rotation(this.node);
   
-  this.el = scene.addChild()
+  this.el = scene.addChild();
   //this.el.setPosition(0,0,-1000)
-  new DOMElement(this.el).setCutoutState(false)
+  new DOMElement(this.el).setCutoutState(false);
 
-  this.gestures = new GestureHandler(this.el).on('tap', function(e,v){
-    this.grid.rotation.set(0,2*Math.PI,0,{duration:3000, curve:'easeOut'}, function(){
-       this.grid.rotation.set(0,0,0)
-    }.bind(this))
-  }.bind(this)) 
+  this.gestures = new GestureHandler(this.el).on('tap', function (e, v) {
+    this.grid.rotation.set(0, 2 * Math.PI, 0, {duration: 3000, curve: 'easeOut'}, function () {
+      this.grid.rotation.set(0, 0, 0);
+    }.bind(this));
+  }.bind(this));
 
 
   this.audio = new Aud();
