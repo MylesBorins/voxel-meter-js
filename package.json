@@ -28,6 +28,7 @@
     "eslint": "^0.22.1",
     "finalhandler": "^0.3.6",
     "jscs": "^1.7.3",
+    "serve": "^1.4.0",
     "serve-static": "^1.9.3",
     "uglify-js": "^2.4.15",
     "uglifyify": "^3.0.1",
