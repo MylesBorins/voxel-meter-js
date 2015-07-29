@@ -2,6 +2,9 @@
 
 var Grid = require('./Grid');
 var Aud = require('./Audio');
+var DOMElement = require('famous/dom-renderables/DOMElement');
+var GestureHandler = require('famous/components/GestureHandler');
+var Rotation = require('famous/components/Rotation');
 
 function VUSpec(scene, options) {
   if (!options) {
@@ -29,6 +32,18 @@ function VUSpec(scene, options) {
     width: this.width,
     boxSize: this.boxSize
   });
+
+  this.grid.rotation = new Rotation(this.node)
+  
+  this.el = scene.addChild()
+  new DOMElement(this.el)
+
+  this.gestures = new GestureHandler(this.el).on('tap', function(e,v){
+    this.grid.rotation.set(0,0,2*Math.PI,{duration:1000, curve:'easeOut'}, function(){
+       this.grid.rotation.set(0,0,0)
+    }.bind(this))
+  }.bind(this)) 
+
 
   this.audio = new Aud();
 
